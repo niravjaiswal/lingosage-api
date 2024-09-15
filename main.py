@@ -24,6 +24,8 @@ import time
 import re
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptAvailable, VideoUnavailable
+from pytubefix import YouTube
+from pytubefix.cli import on_progress
 
 
 logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=os.environ.get('LOGLEVEL', 'INFO'))
@@ -137,7 +139,7 @@ def is_video_long(youtube_url):
         app.logger.error(f"Error fetching video duration: {e}")
         return False
 
-def download_video(url,uid):
+'''def download_video(url,uid):
     youtube = YouTube(url)
     video = youtube.streams.get_highest_resolution()
     video_filename = f"{uid}.mp4"  # Specify the desired file name
@@ -148,6 +150,25 @@ def download_video(url,uid):
         os.makedirs("temp")
 
     video.download(output_path="temp", filename=video_filename)
+    return video_output_path'''
+def download_video(url, uid):
+    # Initialize YouTube object with on_progress callback
+    youtube = YouTube(url, on_progress_callback=on_progress)
+    
+    # Get the highest resolution stream
+    video = youtube.streams.get_highest_resolution()
+    
+    # Specify the desired file name and output path
+    video_filename = f"{uid}.mp4"
+    video_output_path = os.path.join("temp", video_filename)
+    
+    # Create the temp directory if it doesn't exist
+    if not os.path.exists("temp"):
+        os.makedirs("temp")
+    
+    # Download the video to the specified output path
+    video.download(output_path="temp", filename=video_filename)
+    
     return video_output_path
 
 def download_video_again(url, uid):
