@@ -316,7 +316,7 @@ def send_to_openai1(prompt):
         'model': 'gpt-3.5-turbo',
         "messages": [
             {"role": "system", "content": "You are a student helper that takes video transcripts, text in pdf, audio transcript and uses prompts to answer questions, make quizzes, take notes, etc."},
-            {"role": "user", "content": f"{prompt} using this in this language({global_output_language}): {transcript}"}
+            {"role": "user", "content": f" here is the transcript of the video to use as a basis to answer the prompt: {transcript}; Answer this prompt in {global_output_language}: {prompt};"}
         ],
         "max_tokens": 2000,  # Adjust as needed
     }
