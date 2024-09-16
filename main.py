@@ -387,7 +387,7 @@ def quiz(transcript):
                                     { "id": 2, "text": "Answer#3" },
                                     { "id": 3, "text": "Answer#4" }
                                 ],
-                                "correctOption": 1
+                                "correctOption": 2
                             }
                         ]
                         """},
