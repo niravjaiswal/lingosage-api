@@ -582,7 +582,7 @@ def process():
             flashcard_response = json.loads('{"error": "error"}')
 
         app.logger.debug("making quiz")
-        quiz_response = json.loads(quiz(transcript))
+        quiz_response = quiz(transcript)
         # If everything goes well, return notes
         response_data = {"notes": openai_response,
                          "flashcards": flashcard_response, 
