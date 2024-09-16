@@ -366,26 +366,31 @@ def quiz(transcript):
     data = {
         'model': 'gpt-3.5-turbo',
         "messages": [{"role": "system", "content": """You are a quiz maker, return in the format: 
-                        {id: 1,
-                            text: 'Question#1',
-                            options: [
-                            { id: 0, text: 'Answer#1' },
-                            { id: 1, text: 'Answer#2' },
-                            { id: 2, text: 'Answer#3' },
-                            { id: 3, text: 'Answer#4' },
-                            ],
-                            correctOption: 1, // Assuming the second option is correct
-                        },{
-                            id: 2,
-                            text: 'Question#2?',
-                            options: [
-                            { id: 0, text: 'Answer#1' },
-                            { id: 1, text: 'Answer#2' },
-                            { id: 2, text: 'Answer#3' },
-                            { id: 3, text: 'Answer#4' },
-                            ],
-                            correctOption: 1, // Assuming the second option is correct
-                        },"""},
+                        [
+                            {
+                                "id": 1,
+                                "text": "Question#1",
+                                "options": [
+                                    { "id": 0, "text": "Answer#1" },
+                                    { "id": 1, "text": "Answer#2" },
+                                    { "id": 2, "text": "Answer#3" },
+                                    { "id": 3, "text": "Answer#4" }
+                                ],
+                                "correctOption": 1
+                            },
+                            {
+                                "id": 2,
+                                "text": "Question#2?",
+                                "options": [
+                                    { "id": 0, "text": "Answer#1" },
+                                    { "id": 1, "text": "Answer#2" },
+                                    { "id": 2, "text": "Answer#3" },
+                                    { "id": 3, "text": "Answer#4" }
+                                ],
+                                "correctOption": 1
+                            }
+                        ]
+                        """},
                      {"role": "user", "content": 'Make quiz in ' + global_output_language + ' out of this video transcript: ' + transcript, }],
         "max_tokens": 2000,  # Adjust as needed
     }
@@ -582,7 +587,10 @@ def process():
             flashcard_response = json.loads('{"error": "error"}')
 
         app.logger.debug("making quiz")
-        quiz_response = quiz(transcript)
+        try:
+            quiz_response = json.loads(quiz(transcript))
+        except:
+            quiz_response = json.loads('{"error": "error"}')
         # If everything goes well, return notes
         response_data = {"notes": openai_response,
                          "flashcards": flashcard_response, 
