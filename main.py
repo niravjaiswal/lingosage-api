@@ -356,6 +356,48 @@ def flashcards(transcript):
         app.logger.debug(f"Error from OpenAI: {response.text}")
         return "Error in processing notes"
 
+def quiz(transcript):
+    4000 - (len(transcript) // 4)
+    openai_url = 'https://api.openai.com/v1/chat/completions'
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': os.getenv('OPENAI_API_KEY')  # Replace with your API key
+    }
+    data = {
+        'model': 'gpt-3.5-turbo',
+        "messages": [{"role": "system", "content": """You are a quiz maker, return in the format: 
+                        {id: 1,
+                            text: 'Question#1',
+                            options: [
+                            { id: 0, text: 'Answer#1' },
+                            { id: 1, text: 'Answer#2' },
+                            { id: 2, text: 'Answer#3' },
+                            { id: 3, text: 'Answer#4' },
+                            ],
+                            correctOption: 1, // Assuming the second option is correct
+                        },{
+                            id: 2,
+                            text: 'Question#2?',
+                            options: [
+                            { id: 0, text: 'Answer#1' },
+                            { id: 1, text: 'Answer#2' },
+                            { id: 2, text: 'Answer#3' },
+                            { id: 3, text: 'Answer#4' },
+                            ],
+                            correctOption: 1, // Assuming the second option is correct
+                        },"""},
+                     {"role": "user", "content": 'Make quiz in ' + global_output_language + ' out of this video transcript: ' + transcript, }],
+        "max_tokens": 2000,  # Adjust as needed
+    }
+
+    response = requests.post(openai_url, headers=headers, json=data)
+    if response.status_code == 200:
+        app.logger.debug(response.json()['choices'][0]['message']['content'])
+        return response.json()['choices'][0]['message']['content']
+    else:
+        app.logger.debug(f"Error from OpenAI: {response.text}")
+        return "Error in processing notes"
+
 def correct_flashcard_format(response_text):
     # Insert commas where necessary
     formatted_text = response_text.replace("\n", "")
@@ -539,11 +581,13 @@ def process():
         except:
             flashcard_response = json.loads('{"error": "error"}')
 
-        
+        app.logger.debug("making quiz")
+        quiz_response = json.loads(quiz(transcript))
         # If everything goes well, return notes
         response_data = {"notes": openai_response,
                          "flashcards": flashcard_response, 
                          "transcript": transcript,
+                         "quiz": quiz_response,
                 }
         
 
