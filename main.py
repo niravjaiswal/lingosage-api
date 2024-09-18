@@ -498,7 +498,7 @@ def process_pdf():
             app.logger.debug("PDF to TXT")
             txt_filename = f"{uid}.txt"
             txt_path = os.path.join(pdf_directory, txt_filename)
-            convertapi.api_secret = 'PhK92ENuyvxM6pqt'
+            convertapi.api_secret = 'secret_wdPXwuK3d5rn4J1X'
             convertapi.convert('txt', {'File': pdf_path}, from_format='pdf').save_files(txt_path)
 
             # Read the TXT file
