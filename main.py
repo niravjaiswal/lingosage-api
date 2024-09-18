@@ -516,12 +516,17 @@ def process_pdf():
             except:
                 flashcard_response = json.loads('{"error": "error"}')
 
-            response_data = {
-                "notes": openai_response,
-                "flashcards": flashcard_response,
-                "transcript": transcript,
-                "vidCheck": "PDF",
-            }
+            try:
+                quiz_response = json.loads(quiz(transcript))
+            except:
+                quiz_response = json.loads('{"error": "error"}')
+        # If everything goes well, return notes
+            response_data = {"notes": openai_response,
+                         "flashcards": flashcard_response, 
+                         "transcript": transcript,
+                         "quiz": quiz_response,
+                         "vidCheck": "PDF",
+                }
 
             response = make_response(response_data, 200)  # Status code 200 for OK
             response.headers.add('Access-Control-Allow-Origin', '*')
@@ -707,9 +712,16 @@ def process_audio():
         except:
             flashcard_response = json.loads('{"error": "error"}')
 
+        try:
+            quiz_response = json.loads(quiz(transcript))
+        except:
+            quiz_response = json.loads('{"error": "error"}')
+        # If everything goes well, return notes
         response_data = {"notes": openai_response,
                          "flashcards": flashcard_response, 
-                         "transcript": transcript,}
+                         "transcript": transcript,
+                         "quiz": quiz_response,
+                }
 
         # Create the response with the Access-Control-Allow-Origin header
         response = make_response(response_data, 200)
@@ -797,10 +809,16 @@ def process_video_file():
         except:
             flashcard_response = json.loads('{"error": "error"}')
 
+        try:
+            quiz_response = json.loads(quiz(transcript))
+        except:
+            quiz_response = json.loads('{"error": "error"}')
+        # If everything goes well, return notes
         response_data = {"notes": openai_response,
                          "flashcards": flashcard_response, 
                          "transcript": transcript,
-                        }
+                         "quiz": quiz_response,
+                }
 
         # Create the response with the Access-Control-Allow-Origin header
         response = make_response(response_data, 200)
