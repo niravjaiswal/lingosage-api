@@ -577,7 +577,6 @@ def process():
         # Send transcript to OpenAI for processing
         app.logger.debug("making notes")
         openai_response = send_to_openai(transcript, lang)
-        '''
         app.logger.debug("making flashcards")
         try:
             flashcard_response = json.loads(flashcards(transcript))
@@ -588,90 +587,15 @@ def process():
         try:
             quiz_response = json.loads(quiz(transcript))
         except:
-            quiz_response = json.loads('{"error": "error"}')'''
-        # If everything goes well, return notes
-        response_data = {"notes": openai_response,
-                         #"flashcards": flashcard_response, 
-                         "transcript": transcript,
-                         #"quiz": quiz_response,
-                }
-        
-
-        # Create the response with the Access-Control-Allow-Origin header
-        response = make_response(response_data, 200)  # Status code 200 for OK
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        return response
-
-    except Exception as e:
-        app.logger.debug(f"An error occurred: {e}")
-        # Create an error response with the Access-Control-Allow-Origin header
-        error_response = make_response("No", 500)  # Status code 500 for Internal Server Error
-        error_response.headers['Access-Control-Allow-Origin'] = '*'
-        return error_response
-    
-@app.route('/processFlashcards', methods=['POST'])
-
-def processFlashcards():
-    try:
-        app.logger.debug('/processFlashcards')
-        # Get data from POST request body
-        global global_translated_text
-        global global_output_language
-        data = request.json
-        app.logger.debug(json.dumps(data, indent=2))
-        youtube_link = data.get('youtube_link')
-        lang = data.get('lang')
-        lang2 = data.get('lang2')
-        uid = data.get('uid')
-        global_output_language=lang
-        app.logger.debug("making flashcards")
-        try:
-            flashcard_response = json.loads(flashcards(global_translated_text))
-        except:
-            flashcard_response = json.loads('{"error": "error"}')
-
-        # If everything goes well, return notes
-        response_data = {"flashcards": flashcard_response, 
-                        
-                }
-        
-        # Create the response with the Access-Control-Allow-Origin header
-        response = make_response(response_data, 200)  # Status code 200 for OK
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        return response
-
-    except Exception as e:
-        app.logger.debug(f"An error occurred: {e}")
-        # Create an error response with the Access-Control-Allow-Origin header
-        error_response = make_response("No", 500)  # Status code 500 for Internal Server Error
-        error_response.headers['Access-Control-Allow-Origin'] = '*'
-        return error_response
-    
-@app.route('/processQuiz', methods=['POST'])
-
-def processQuiz():
-    try:
-        app.logger.debug('/processQuiz')
-        # Get data from POST request body
-        global global_translated_text
-        global global_output_language
-        data = request.json
-        app.logger.debug(json.dumps(data, indent=2))
-        youtube_link = data.get('youtube_link')
-        lang = data.get('lang')
-        lang2 = data.get('lang2')
-        uid = data.get('uid')
-        global_output_language=lang
-        app.logger.debug("making quiz")
-        try:
-            quiz_response = json.loads(quiz(global_translated_text))
-        except:
             quiz_response = json.loads('{"error": "error"}')
         # If everything goes well, return notes
-        response_data = {
+        response_data = {"notes": openai_response,
+                         "flashcards": flashcard_response, 
+                         "transcript": transcript,
                          "quiz": quiz_response,
                 }
         
+
         # Create the response with the Access-Control-Allow-Origin header
         response = make_response(response_data, 200)  # Status code 200 for OK
         response.headers.add('Access-Control-Allow-Origin', '*')
@@ -975,4 +899,3 @@ def ping():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
-    
