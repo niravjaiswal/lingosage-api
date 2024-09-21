@@ -187,7 +187,7 @@ def fetch_youtube_transcript(youtube_url):
         print("Invalid YouTube URL.")
         return None
     
-    transcripts = YouTubeTranscriptApi.get_transcript(video_id, proxies={"https": "https://spy5zrsf0y:<password>@gate.smartproxy.com:10001"})
+    transcripts = YouTubeTranscriptApi.get_transcript(video_id, proxies={"https": "https://spy5zrsf0y:j6De4vz8xUw+whgUJ8@gate.smartproxy.com:10001"})
     transcript_text = " ".join([t['text'] for t in transcripts])
     return transcript_text
 
