@@ -179,26 +179,19 @@ def transcribe(audio_path, lang2):
 
 def fetch_youtube_transcript(youtube_url):
     # Extract video ID from the YouTube URL using regex
+    app.logger.debug(youtube_url)
     video_id_match = re.match(r'^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*', youtube_url)
     if video_id_match:
         video_id = video_id_match.group(1)
     else:
         print("Invalid YouTube URL.")
         return None
+    
+    transcripts = YouTubeTranscriptApi.get_transcript(video_id)
+    transcript_text = " ".join([t['text'] for t in transcripts])
+    return transcript_text
 
-    try:
-        # Get available transcripts for the video
-        transcripts = YouTubeTranscriptApi.get_transcript(video_id)
-        transcript_text = " ".join([t['text'] for t in transcripts])
-        return transcript_text
-
-    except (TranscriptsDisabled, NoTranscriptAvailable, VideoUnavailable) as e:
-        print("No transcript available or transcripts are disabled for this video.")
-        return None
-    except Exception as e:
-        print("Error:", e)
-        return None
-
+   
 
 def calculate_speed_factor(uid):
     video_file = f"temp/{uid}.mp4"
@@ -561,8 +554,6 @@ def process():
         # Check for YouTube transcript
         app.logger.debug("Checking for YouTube transcript")
         transcript = fetch_youtube_transcript(youtube_link)
-        transcript = fetch_youtube_transcript(youtube_link)
-        app.logger.debug(transcript)
         if transcript:
             app.logger.debug("YouTube transcript found")
         else:
