@@ -561,7 +561,8 @@ def process():
         # Check for YouTube transcript
         app.logger.debug("Checking for YouTube transcript")
         transcript = fetch_youtube_transcript(youtube_link)
-
+        transcript = fetch_youtube_transcript(youtube_link)
+        app.logger.debug(transcript)
         if transcript:
             app.logger.debug("YouTube transcript found")
         else:
@@ -907,3 +908,4 @@ def ping():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
+    
