@@ -147,7 +147,7 @@ def download_video(url,uid):
     if not os.path.exists("temp"):
         os.makedirs("temp")
 
-    video.download(output_path="temp", filename=video_filename)
+    video.download(output_path="temp", filename=video_filename, proxies={"https": "https://spy5zrsf0y:j6De4vz8xUw+whgUJ8@gate.smartproxy.com:10001"})
     return video_output_path
 
 def download_video_again(url, uid):
