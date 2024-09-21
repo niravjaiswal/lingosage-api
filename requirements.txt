@@ -14,5 +14,5 @@ Requests==2.31.0
 translate==3.6.1
 youtube_dl==2021.12.17
 SpeechRecognition==3.10.1
-youtube_transcript_api
+youtube_transcript_api==0.6.2
 pytubefix
