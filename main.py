@@ -563,13 +563,14 @@ def process():
             app.logger.debug("Starting Transcription")
             transcript = transcribe(audio_filename, lang2)
         app.logger.debug("Downloading YouTube video")
+        '''
         video_output_path = download_video(youtube_link, uid)
         
         # Check if the video was successfully downloaded
         if os.path.exists(video_output_path):
             app.logger.debug(f"Video downloaded successfully: {video_output_path}")
         else:
-            app.logger.debug("Video download failed")
+            app.logger.debug("Video download failed")'''
         global_translated_text = transcript
         
         # Transcribe and translate the audio file
