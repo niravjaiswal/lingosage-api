@@ -116,7 +116,7 @@ def generate_audio(mytext, language, uid):
 
 
 def download_audio(url, uid):
-    yt = YouTube(url, on_progress_callback = on_progress)
+    yt = YouTube(url, on_progress_callback = on_progress, use_po_token=True)
     video = yt.streams.get_highest_resolution()
     audio_filename = f"{uid}.mp3"  # Specify the desired file name
     audio_output_path = os.path.join("temp", audio_filename)
@@ -130,7 +130,7 @@ def download_audio(url, uid):
 
 def is_video_long(youtube_url):
     try:
-        youtube = YouTube(youtube_url)
+        youtube = YouTube(youtube_url, use_po_token=True)
         duration_seconds = youtube.length
         return duration_seconds > 1800
     except Exception as e:
@@ -138,7 +138,7 @@ def is_video_long(youtube_url):
         return False
 
 def download_video(url,uid):
-    yt = YouTube(url, on_progress_callback = on_progress)
+    yt = YouTube(url, on_progress_callback = on_progress, use_po_token=True)
     video = yt.streams.get_highest_resolution()
     video_filename = f"{uid}.mp4"  # Specify the desired file name
     video_output_path = os.path.join("temp", video_filename)
@@ -151,7 +151,7 @@ def download_video(url,uid):
     return video_output_path
 
 def download_video_again(url, uid):
-    yt = YouTube(url, on_progress_callback = on_progress)
+    yt = YouTube(url, on_progress_callback = on_progress, use_po_token=True)
     video = yt.streams.get_highest_resolution()
     video_filename = f"{uid}.mp4"  # Specify the desired file name
     
