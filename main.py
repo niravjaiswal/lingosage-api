@@ -562,8 +562,8 @@ def process():
             audio_filename = download_audio(youtube_link, uid)
             app.logger.debug("Starting Transcription")
             transcript = transcribe(audio_filename, lang2)
-        app.logger.debug("Downloading YouTube video")
-        '''
+        '''app.logger.debug("Downloading YouTube video")
+        
         video_output_path = download_video(youtube_link, uid)
         
         # Check if the video was successfully downloaded
